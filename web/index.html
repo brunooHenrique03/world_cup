@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Simulador da Copa do Mundo</title>
+<title>Simulador de Futebol</title>
+<meta name="description" content="Simulador de Copa do Mundo, Champions League, Brasileirão e Copa do Brasil com ranking Elo e histórico.">
 <meta name="theme-color" content="#0f3b27">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +14,32 @@
 <body>
 <div id="app"></div>
 <noscript>Este simulador precisa de JavaScript para funcionar.</noscript>
-<script src="data.js"></script>
-<script src="app.js"></script>
+<!-- Ordem importa: namespace → dados → núcleo → persistência → componentes → competições → app → páginas. -->
+<script src="js/sim.js"></script>
+<script src="js/data/selecoes.js"></script>
+<script src="js/data/clubes-br.js"></script>
+<script src="js/data/clubes-eu.js"></script>
+<script src="js/core/rng.js"></script>
+<script src="js/core/elo.js"></script>
+<script src="js/core/match.js"></script>
+<script src="js/core/standings.js"></script>
+<script src="js/core/schedule.js"></script>
+<script src="js/core/draw.js"></script>
+<script src="js/store.js"></script>
+<script src="js/ui/icones.js"></script>
+<script src="js/ui/components.js"></script>
+<script src="js/ui/stats.js"></script>
+<script src="js/comps/common.js"></script>
+<script src="js/comps/copa.js"></script>
+<script src="js/comps/brasileirao.js"></script>
+<script src="js/comps/copa-brasil.js"></script>
+<script src="js/comps/champions.js"></script>
+<script src="js/app.js"></script>
+<script src="js/ui/pages/inicio.js"></script>
+<script src="js/ui/pages/competicao.js"></script>
+<script src="js/ui/pages/rankings.js"></script>
+<script src="js/ui/pages/historico.js"></script>
+<script src="js/ui/pages/time.js"></script>
+<script src="js/ui/pages/config.js"></script>
 </body>
 </html>

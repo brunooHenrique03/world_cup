@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Testes do Simulador</title>
+<style>
+  :root { --bg: #edf3ee; --ink: #122219; --muted: #5a6e61; --ok: #1c6e45; --bad: #a8463a; --line: #cddbd1; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0b1510; --ink: #e4eee7; --muted: #92a89a; --ok: #3aa86d; --bad: #e07b6c; --line: #26402f; } }
+  body { margin: 0; padding: 24px 16px; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, sans-serif; }
+  main { max-width: 820px; margin: 0 auto; }
+  h1 { font-size: 1.4rem; }
+  ol { padding: 0; list-style: none; }
+  li { padding: 8px 0; border-bottom: 1px solid var(--line); display: flex; gap: 10px; }
+  .ok { color: var(--ok); font-weight: 700; } .bad { color: var(--bad); font-weight: 700; }
+  small, .muted { color: var(--muted); }
+  code { white-space: pre-wrap; color: var(--bad); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Testes do simulador</h1>
+  <p class="muted">Motor de partidas, Elo, desempates, sorteios e uma simulação completa de cada competição. Os testes não alteram os seus dados.</p>
+  <p id="resumo">Rodando…</p>
+  <ol id="lista"></ol>
+</main>
+<script src="js/sim.js"></script>
+<script src="js/data/selecoes.js"></script>
+<script src="js/data/clubes-br.js"></script>
+<script src="js/data/clubes-eu.js"></script>
+<script src="js/core/rng.js"></script>
+<script src="js/core/elo.js"></script>
+<script src="js/core/match.js"></script>
+<script src="js/core/standings.js"></script>
+<script src="js/core/schedule.js"></script>
+<script src="js/core/draw.js"></script>
+<script src="js/store.js"></script>
+<script src="js/ui/components.js"></script>
+<script src="js/comps/common.js"></script>
+<script src="js/comps/copa.js"></script>
+<script src="js/comps/brasileirao.js"></script>
+<script src="js/comps/copa-brasil.js"></script>
+<script src="js/comps/champions.js"></script>
+<script src="js/testes.js"></script>
+<script>
+  SIM.store.iniciar().then(() => setTimeout(() => {
+    const res = SIM.rodarTestes();
+    const falhas = res.filter((r) => !r.ok).length;
+    document.getElementById('resumo').innerHTML = falhas
+      ? `<span class="bad">${falhas} de ${res.length} testes falharam.</span>`
+      : `<span class="ok">Todos os ${res.length} testes passaram.</span>`;
+    document.getElementById('lista').innerHTML = res.map((r) => `<li><span class="${r.ok ? 'ok' : 'bad'}">${r.ok ? '✓' : '✗'}</span>
+      <div>${SIM.esc(r.nome)} <small>${r.ms} ms</small>${r.ok ? '' : `<br><code>${SIM.esc(r.erro)}</code>`}</div></li>`).join('');
+  }, 30));
+</script>
+</body>
+</html>
