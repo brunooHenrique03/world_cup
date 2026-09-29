@@ -1,0 +1,342 @@
+unit UDefinirParticipantes;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Data.DB,
+  Vcl.Grids, Vcl.DBGrids, Vcl.Buttons, Datasnap.DBClient;
+
+type
+  TFrmDefinirParticipantes = class(TForm)
+    Label3: TLabel;
+    Shape1: TShape;
+    Label7: TLabel;
+    Panel1: TPanel;
+    Label1: TLabel;
+    Shape7: TShape;
+    Label2: TLabel;
+    DBGrid1: TDBGrid;
+    Panel2: TPanel;
+    Label4: TLabel;
+    Shape2: TShape;
+    Label5: TLabel;
+    DBGrid2: TDBGrid;
+    Panel3: TPanel;
+    Label6: TLabel;
+    Shape3: TShape;
+    Label8: TLabel;
+    DBGrid3: TDBGrid;
+    Panel4: TPanel;
+    Label9: TLabel;
+    Shape4: TShape;
+    Label10: TLabel;
+    DBGrid4: TDBGrid;
+    Panel5: TPanel;
+    Label11: TLabel;
+    Shape5: TShape;
+    Label12: TLabel;
+    DBGrid5: TDBGrid;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    BitBtn3: TBitBtn;
+    BitBtn4: TBitBtn;
+    BitBtn5: TBitBtn;
+    America_Norte: TClientDataSet;
+    America_NorteCODIGO: TIntegerField;
+    America_NorteSELECAO: TStringField;
+    America_Sul: TClientDataSet;
+    IntegerField1: TIntegerField;
+    StringField1: TStringField;
+    Africa: TClientDataSet;
+    IntegerField2: TIntegerField;
+    StringField2: TStringField;
+    Europa: TClientDataSet;
+    IntegerField3: TIntegerField;
+    StringField3: TStringField;
+    Asia_Oceania: TClientDataSet;
+    IntegerField4: TIntegerField;
+    StringField4: TStringField;
+    DataSource1: TDataSource;
+    DataSource2: TDataSource;
+    DataSource3: TDataSource;
+    DataSource4: TDataSource;
+    DataSource5: TDataSource;
+    Panel6: TPanel;
+    SpeedButton1: TSpeedButton;
+    Label13: TLabel;
+    Panel7: TPanel;
+    Panel8: TPanel;
+    SpeedButton3: TSpeedButton;
+    SpeedButton2: TSpeedButton;
+    procedure FormShow(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
+    procedure BitBtn4Click(Sender: TObject);
+    procedure BitBtn5Click(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure Label13Click(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+  private
+    { Private declarations }
+    procedure AddSelecao( pCodigo: Integer; pNome:String; pDataset: TClientDataSet );
+    procedure SortearSelecao( pContinente: String; pDataset: TClientDataSet );
+    procedure SortearContinente( pContinente: String; pNumSelecoes: Integer; pDataset: TClientdataset );
+    procedure SalvarParticipante( pDataset: TClientDataSet );
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmDefinirParticipantes: TFrmDefinirParticipantes;
+
+implementation
+
+{$R *.dfm}
+
+uses UnitConfiguracoes, UdmPrincipal, USorteioGrupos, UPrincipal;
+
+procedure TFrmDefinirParticipantes.AddSelecao(pCodigo: Integer; pNome: String;
+  pDataset: TClientDataSet);
+begin
+  pDataset.Append;
+
+  pDataset.Fields.FieldByName( 'CODIGO' ).AsInteger := pCodigo;
+  pDataset.Fields.FieldByName( 'SELECAO' ).AsString := pNome;
+
+  pDataset.Post;
+end;
+
+procedure TFrmDefinirParticipantes.BitBtn1Click(Sender: TObject);
+begin
+  if ( America_Norte.RecordCount < 6 ) then
+  begin
+    SortearSelecao('AMERICA_DO_NORTE_CENTRAL', America_Norte);
+    BitBtn1.Enabled := (America_Norte.RecordCount < 6);
+  end;
+end;
+
+procedure TFrmDefinirParticipantes.BitBtn2Click(Sender: TObject);
+begin
+  if ( America_Sul.RecordCount < 6 ) then
+  begin
+    SortearSelecao('AMERICA_DO_SUL', America_Sul);
+    BitBtn2.Enabled := (America_Sul.RecordCount < 6);
+  end;
+end;
+
+procedure TFrmDefinirParticipantes.BitBtn3Click(Sender: TObject);
+begin
+  if ( Africa.RecordCount < 10 ) then
+  begin
+    SortearSelecao('AFRICA', Africa);
+    BitBtn3.Enabled := (Africa.RecordCount < 10);
+  end;
+
+end;
+
+procedure TFrmDefinirParticipantes.BitBtn4Click(Sender: TObject);
+begin
+  if ( Europa.RecordCount < 16 ) then
+  begin
+    SortearSelecao('EUROPA', Europa);
+    BitBtn4.Enabled := (Europa.RecordCount < 16);
+  end;
+end;
+
+procedure TFrmDefinirParticipantes.BitBtn5Click(Sender: TObject);
+begin
+  if ( Asia_Oceania.RecordCount < 10 ) then
+  begin
+    SortearSelecao('ASIA_OCEANIA', Asia_Oceania);
+    BitBtn5.Enabled := (Asia_Oceania.RecordCount < 10);
+  end;
+end;
+
+procedure TFrmDefinirParticipantes.FormShow(Sender: TObject);
+begin
+  SpeedButton3.Click;
+end;
+procedure TFrmDefinirParticipantes.Label13Click(Sender: TObject);
+begin
+  if (Africa.RecordCount = 10) and (Europa.RecordCount = 16) and (Asia_Oceania.RecordCount = 10) and (America_Norte.RecordCount = 6) and (America_Sul.RecordCount = 6) then
+  begin
+    dmPrincipal.qry_Competicao
+    dmPrincipal.qry_Competicao.Post;
+
+    SalvarParticipante(aFRICA);
+    SalvarParticipante(Europa);
+    SalvarParticipante(Asia_Oceania);
+    SalvarParticipante(America_Norte);
+    SalvarParticipante(America_Sul);
+
+    dmPrincipal.ConexaoPrincipal.CommitRetaining;
+
+
+    FrmSorteioGrupos := TFrmSorteioGrupos.Create(FrmPrincipal);
+    FrmSorteioGrupos.Parent := FrmPrincipal.pnlParent;
+    FrmSorteioGrupos.Show;
+    FrmPrincipal.PosicionarForm( FrmSorteioGrupos );
+
+    Self.Close;
+  end
+  else
+  begin
+    MessageDlg('Sorteie todos os participantes antes de prosseguir!', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbOK], 0);
+  end;
+end;
+
+procedure TFrmDefinirParticipantes.SalvarParticipante(pDataset: TClientDataSet);
+begin
+  dmPrincipal.qry_Participante.Close;
+  dmPrincipal.qry_Participante.Open;
+
+  pDataset.First;
+  while not(pDataSet.Eof) do
+  begin
+    dmPrincipal.qry_Participante.Append;
+
+    dmPrincipal.qry_ParticipanteCODIGO.AsInteger     := dmPrincipal.GetNewID( 'TPARTICIPANTE', 'CODIGO' );
+    dmPrincipal.qry_ParticipanteCOMPETICAO.AsInteger := dmPrincipal.qry_CompeticaoCODIGO.AsInteger;
+    dmPrincipal.qry_ParticipanteSELECAO.AsInteger    := pDataset.Fields.FieldByName( 'CODIGO' ).AsInteger;
+
+    if ( pDataset.Fields.FieldByName( 'CODIGO' ).AsInteger = dmPrincipal.qry_CompeticaoANFITRIAO.AsInteger) then
+      dmPrincipal.qry_ParticipanteANFITRIAO.AsString := 'SIM'
+    else
+      dmPrincipal.qry_ParticipanteANFITRIAO.AsString := 'NÃO';
+
+
+    dmPrincipal.qry_Participante.Post;
+
+    pDataset.Next;
+  end;
+
+  dmPrincipal.qry_Participante.Connection.CommitRetaining;
+end;
+
+procedure TFrmDefinirParticipantes.SortearContinente(pContinente: String;
+  pNumSelecoes: Integer; pDataset: TClientdataset);
+var
+  i: Integer;
+begin
+  for i := pDataset.RecordCount to pNumSelecoes -1 do
+  begin
+    SortearSelecao( pContinente, pDataset );
+  end;
+end;
+
+procedure TFrmDefinirParticipantes.SortearSelecao(pContinente: String; pDataset: TClientDataSet);
+var
+  vList: TStringList;
+  iSorteado: Integer;
+  bSorteioValido: Boolean;
+begin
+  dmPrincipal.qry_Times.Close;
+  dmPrincipal.qry_Times.SQL.Clear;
+  dmPrincipal.qry_Times.SQL.Add('Select * from TTIMES where CONTINENTE = ' + QuotedStr(pContinente) );
+  dmPrincipal.qry_Times.Open();
+  dmPrincipal.qry_Times.First;
+
+  vList := TStringList.Create;
+  try
+    vList.Clear;
+    while not(dmPrincipal.qry_Times.eof) do
+    begin
+      vList.Add( dmPrincipal.qry_TimesCODIGO.AsString );
+
+      dmPrincipal.qry_Times.Next;
+    end;
+
+    bSorteioValido := False;
+    while not(bSorteioValido) do
+    begin
+      iSorteado := StrToInt(vList[ Random( vList.Count ) ]);
+
+      if not( pDataset.Locate( 'CODIGO', IntToStr(iSorteado), [] ) ) then
+      begin
+
+        dmPrincipal.qry_Times.Close;
+        dmPrincipal.qry_Times.SQL.Clear;
+        dmPrincipal.qry_Times.SQL.Add('Select * from TTIMES where CODIGO = ' + QuotedStr(IntToStr(iSorteado)) );
+        dmPrincipal.qry_Times.Open();
+
+        AddSelecao( dmPrincipal.qry_TimesCODIGO.AsInteger, dmPrincipal.qry_TimesSELECAO.AsString, pDataset );
+
+
+        bSorteioValido := True;
+      end;
+
+
+    end;
+
+
+
+
+
+
+  finally
+    vList.Free;
+  end;
+end;
+
+procedure TFrmDefinirParticipantes.SpeedButton2Click(Sender: TObject);
+begin
+  BitBtn1.Enabled := False;
+  BitBtn2.Enabled := False;
+  BitBtn3.Enabled := False;
+  BitBtn4.Enabled := False;
+  BitBtn5.Enabled := False;
+
+  SortearContinente( 'AMERICA_DO_NORTE_CENTRAL', 6, America_Norte );
+  SortearContinente( 'AMERICA_DO_SUL', 6, America_Sul );
+  SortearContinente( 'AFRICA', 10, Africa );
+  SortearContinente( 'ASIA_OCEANIA', 10, Asia_Oceania );
+  SortearContinente( 'EUROPA', 16, Europa );
+end;
+
+procedure TFrmDefinirParticipantes.SpeedButton3Click(Sender: TObject);
+begin
+  America_Norte.Close;
+  America_Norte.CreateDataSet;
+
+  America_Sul.Close;
+  America_Sul.CreateDataSet;
+
+  Africa.Close;
+  Africa.CreateDataSet;
+
+  Europa.Close;
+  Europa.CreateDataSet;
+
+  Asia_Oceania.Close;
+  Asia_Oceania.CreateDataSet;
+
+  //---------- Anfitrião
+  dmPrincipal.qry_Times.Close;
+  dmPrincipal.qry_Times.SQL.Clear;
+  dmPrincipal.qry_Times.SQL.Add('Select * from TTIMES where CODIGO = ' + QuotedStr(dmPrincipal.qry_CompeticaoANFITRIAO.AsString) );
+  dmPrincipal.qry_Times.Open();
+
+  if ( dmPrincipal.qry_TimesCONTINENTE.AsString = 'AMERICA_DO_NORTE_CENTRAL' ) then
+    AddSelecao( dmPrincipal.qry_TimesCODIGO.AsInteger, dmPrincipal.qry_TimesSELECAO.AsString, America_Norte )
+  else if ( dmPrincipal.qry_TimesCONTINENTE.AsString = 'AMERICA_DO_SUL' ) then
+    AddSelecao( dmPrincipal.qry_TimesCODIGO.AsInteger, dmPrincipal.qry_TimesSELECAO.AsString, America_Sul )
+  else if ( dmPrincipal.qry_TimesCONTINENTE.AsString = 'AFRICA' ) then
+    AddSelecao( dmPrincipal.qry_TimesCODIGO.AsInteger, dmPrincipal.qry_TimesSELECAO.AsString, Africa)
+  else if ( dmPrincipal.qry_TimesCONTINENTE.AsString = 'EUROPA' ) then
+    AddSelecao( dmPrincipal.qry_TimesCODIGO.AsInteger, dmPrincipal.qry_TimesSELECAO.AsString, Europa )
+  else if ( dmPrincipal.qry_TimesCONTINENTE.AsString = 'ASIA_OCEANIA' ) then
+    AddSelecao( dmPrincipal.qry_TimesCODIGO.AsInteger, dmPrincipal.qry_TimesSELECAO.AsString, Asia_Oceania )
+  else
+    Application.Terminate;
+
+  BitBtn1.Enabled := True;
+  BitBtn2.Enabled := True;
+  BitBtn3.Enabled := True;
+  BitBtn4.Enabled := True;
+  BitBtn5.Enabled := True;
+end;
+
+end.
+

@@ -1,0 +1,76 @@
+object FrmListagemSelecoes: TFrmListagemSelecoes
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Listagem de sele'#231#245'es'
+  ClientHeight = 400
+  ClientWidth = 600
+  Color = 16381942
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  PixelsPerInch = 96
+  TextHeight = 15
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 600
+    Height = 49
+    Align = alTop
+    BevelOuter = bvNone
+    Caption = 'Panel1'
+    Color = 16381942
+    ParentBackground = False
+    ShowCaption = False
+    TabOrder = 0
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 49
+    Width = 600
+    Height = 351
+    Align = alClient
+    BevelOuter = bvNone
+    Caption = 'Panel1'
+    Color = 16381942
+    ParentBackground = False
+    ShowCaption = False
+    TabOrder = 1
+    object DBGrid1: TDBGrid
+      Left = 0
+      Top = 0
+      Width = 600
+      Height = 351
+      Align = alClient
+      DataSource = dmPrincipal.dsTimes
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -12
+      TitleFont.Name = 'Segoe UI'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'CODIGO'
+          Width = 100
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'SELECAO'
+          Width = 360
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'SIGLA'
+          Width = 100
+          Visible = True
+        end>
+    end
+  end
+end

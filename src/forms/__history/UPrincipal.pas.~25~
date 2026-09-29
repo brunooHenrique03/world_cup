@@ -1,0 +1,117 @@
+unit UPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Buttons, Vcl.Menus,
+  Vcl.Imaging.pngimage, Vcl.StdCtrls;
+
+type
+  TFrmPrincipal = class(TForm)
+    Image1: TImage;
+    Shape1: TShape;
+    Label1: TLabel;
+    Panel1: TPanel;
+    SpeedButton1: TSpeedButton;
+    Panel2: TPanel;
+    SpeedButton2: TSpeedButton;
+    Panel3: TPanel;
+    SpeedButton3: TSpeedButton;
+    Panel4: TPanel;
+    pnlParent: TPanel;
+    pnlBtnComecar: TPanel;
+    Timer1: TTimer;
+    procedure Grupos1Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure Label1Click(Sender: TObject);
+  private
+    { Private declarations }
+    procedure PosicionarComponentes();
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmPrincipal: TFrmPrincipal;
+
+implementation
+
+{$R *.dfm}
+
+uses USelecoes, UDmPrincipal, UnitConfiguracoes;
+
+procedure TFrmPrincipal.FormResize(Sender: TObject);
+begin
+  PosicionarComponentes;
+end;
+
+procedure TFrmPrincipal.FormShow(Sender: TObject);
+begin
+  Image1.Picture.LoadFromFile( '../images/background_main.png' );
+
+  dmPrincipal.qry_Competicao.Close;
+  dmPrincipal.qry_Competicao.Open();
+  dmPrincipal.qry_Competicao.Last;
+
+  if ( (dmPrincipal.qry_Competicao.IsEmpty) or (dmPrincipal.qry_CompeticaoSTATUS.AsString = 'FINALIZADO')) then
+  begin
+    //----------> Iniciar uma nova copa
+  end;
+
+  Timer1.Enabled := True;
+end;
+
+procedure TFrmPrincipal.Grupos1Click(Sender: TObject);
+begin
+  FrmListagemSelecoes := TFrmListagemSelecoes.Create(nil);
+  try
+    FrmListagemSelecoes.ShowModal();
+  finally
+    FreeAndNil(FrmListagemSelecoes);
+  end;
+end;
+
+procedure TFrmPrincipal.Label1Click(Sender: TObject);
+begin
+  FrmConfiguracoesCompeticao := TFrmConfiguracoesCompeticao.Create(nil);
+  try
+    FrmConfiguracoesCompeticao.Parent := pnlParent;
+    FrmConfiguracoesCompeticao.Show;
+  finally
+//    FreeAndNil(FrmConfiguracoesCompeticao);
+  end;
+
+end;
+
+procedure TFrmPrincipal.PosicionarComponentes;
+begin
+   pnlBtnComecar.Top  := Trunc(  (Self.Height - pnlBtnComecar.Height) / 2 );
+   pnlBtnComecar.Left := 180 + Trunc( (Self.Width - 180 - pnlBtnComecar.Width) / 2 );
+end;
+
+procedure TFrmPrincipal.SpeedButton1Click(Sender: TObject);
+begin
+  FrmListagemSelecoes := TFrmListagemSelecoes.Create(nil);
+  try
+    FrmListagemSelecoes.ShowModal();
+  finally
+    FreeAndNil(FrmListagemSelecoes);
+  end;
+end;
+
+procedure TFrmPrincipal.Timer1Timer(Sender: TObject);
+begin
+  try
+    Timer1.Enabled := False;
+
+    PosicionarComponentes;
+  finally
+    Timer1.Enabled := False;
+  end;
+end;
+
+end.

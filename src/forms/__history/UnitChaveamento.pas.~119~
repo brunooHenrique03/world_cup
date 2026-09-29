@@ -1,0 +1,5 @@
+Γι a maneira correta de acessar
+//  SendMessage(dbgConfrontos.Handle, WM_SETREDRAW, 0, 0); // Desabilita redraw
+//  try
+//    dbgConfrontos.ClientHeight := (qry_Confrontos.RecordCount + 1) * 100; // Altura aproximada
+//    // A altura da linha ι

@@ -1,0 +1,20 @@
+program WorldCup;
+
+uses
+  Vcl.Forms,
+  UPrincipal in 'forms\UPrincipal.pas' {FrmPrincipal},
+  UdmPrincipal in 'forms\UdmPrincipal.pas' {dmPrincipal: TDataModule},
+  USelecoes in 'forms\USelecoes.pas' {FrmListagemSelecoes},
+  UnitConfiguracoes in 'forms\UnitConfiguracoes.pas' {FrmConfiguracoesCompeticao};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TFrmPrincipal, FrmPrincipal);
+  Application.CreateForm(TdmPrincipal, dmPrincipal);
+  Application.CreateForm(TFrmListagemSelecoes, FrmListagemSelecoes);
+  Application.CreateForm(TFrmConfiguracoesCompeticao, FrmConfiguracoesCompeticao);
+  Application.Run;
+end.

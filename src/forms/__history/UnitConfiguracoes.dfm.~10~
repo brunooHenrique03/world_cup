@@ -1,0 +1,237 @@
+object FrmConfiguracoesCompeticao: TFrmConfiguracoesCompeticao
+  Left = 0
+  Top = 0
+  BorderStyle = bsNone
+  Caption = 'FrmConfiguracoesCompeticao'
+  ClientHeight = 390
+  ClientWidth = 500
+  Color = 16381942
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = 3355443
+  Font.Height = -14
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poOwnerFormCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 19
+  object Label2: TLabel
+    Left = 51
+    Top = 112
+    Width = 143
+    Height = 19
+    Caption = 'Modelo de competi'#231#227'o:'
+  end
+  object Label3: TLabel
+    Left = 0
+    Top = 0
+    Width = 500
+    Height = 41
+    Cursor = crHandPoint
+    Align = alTop
+    Alignment = taCenter
+    Caption = 'Vamos iniciar uma nova competi'#231#227'o!'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clMaroon
+    Font.Height = -22
+    Font.Name = 'Cascadia Code PL SemiBold'
+    Font.Style = []
+    ParentFont = False
+    Layout = tlCenter
+    ExplicitLeft = 8
+    ExplicitTop = 9
+  end
+  object Label4: TLabel
+    Left = 229
+    Top = 51
+    Width = 42
+    Height = 19
+    Caption = 'Edi'#231#227'o:'
+  end
+  object DBText1: TDBText
+    Left = 147
+    Top = 76
+    Width = 207
+    Height = 25
+    Alignment = taCenter
+    DataField = 'EDICAO'
+    DataSource = dmPrincipal.dsCompeticao
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = 3355443
+    Font.Height = -18
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object Label5: TLabel
+    Left = 304
+    Top = 112
+    Width = 148
+    Height = 19
+    Caption = 'Quantidade de sele'#231#245'es:'
+  end
+  object DBText2: TDBText
+    Left = 318
+    Top = 134
+    Width = 120
+    Height = 25
+    Alignment = taCenter
+    DataField = 'QUANTTIMES'
+    DataSource = dmPrincipal.dsModelo
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = 3355443
+    Font.Height = -18
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object Label6: TLabel
+    Left = 223
+    Top = 173
+    Width = 55
+    Height = 19
+    Caption = 'Anfitri'#227'o:'
+  end
+  object Shape1: TShape
+    Left = 10
+    Top = 194
+    Width = 480
+    Height = 36
+    Brush.Color = 14548479
+    Pen.Color = 2139610
+    Shape = stRoundRect
+  end
+  object Label7: TLabel
+    Left = 74
+    Top = 201
+    Width = 352
+    Height = 19
+    Alignment = taCenter
+    Caption = 'O anfitri'#227'o tem vaga e posi'#231#227'o garantidas na competi'#231#227'o!'
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 349
+    Width = 500
+    Height = 41
+    Align = alBottom
+    BevelOuter = bvNone
+    Color = 7471103
+    ParentBackground = False
+    TabOrder = 0
+    ExplicitLeft = 104
+    ExplicitTop = 160
+    ExplicitWidth = 185
+    object SpeedButton1: TSpeedButton
+      Left = 0
+      Top = 0
+      Width = 500
+      Height = 41
+      Align = alClient
+      Flat = True
+      ExplicitLeft = 248
+      ExplicitTop = 8
+      ExplicitWidth = 23
+      ExplicitHeight = 22
+    end
+    object Label1: TLabel
+      Left = 0
+      Top = 0
+      Width = 500
+      Height = 41
+      Cursor = crHandPoint
+      Align = alClient
+      Alignment = taCenter
+      Caption = 'AVAN'#199'AR >'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clMaroon
+      Font.Height = -22
+      Font.Name = 'Cascadia Code PL SemiBold'
+      Font.Style = []
+      ParentFont = False
+      Layout = tlCenter
+      ExplicitWidth = 117
+      ExplicitHeight = 29
+    end
+  end
+  object DBLookupComboBox1: TDBLookupComboBox
+    Left = 19
+    Top = 132
+    Width = 207
+    Height = 27
+    DataField = 'MODELO'
+    DataSource = dmPrincipal.dsCompeticao
+    KeyField = 'CODIGO'
+    ListField = 'MODELO'
+    ListSource = dmPrincipal.dsModelo
+    TabOrder = 1
+  end
+  object BitBtn1: TBitBtn
+    Left = 171
+    Top = 236
+    Width = 151
+    Height = 33
+    Caption = 'Sortear Anfitri'#227'o'
+    TabOrder = 2
+  end
+  object pnlPaisSorteado: TPanel
+    Left = 10
+    Top = 276
+    Width = 480
+    Height = 60
+    BevelOuter = bvNone
+    ShowCaption = False
+    TabOrder = 3
+    Visible = False
+    object Shape2: TShape
+      Left = 0
+      Top = 0
+      Width = 480
+      Height = 60
+      Align = alClient
+      Brush.Color = 14811105
+      Pen.Color = 8453888
+      Shape = stRoundRect
+      ExplicitTop = -1
+      ExplicitWidth = 500
+      ExplicitHeight = 70
+    end
+    object Label9: TLabel
+      Left = 174
+      Top = 0
+      Width = 132
+      Height = 19
+      Alignment = taCenter
+      Caption = 'O pa'#237's sorteado foi:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 3355443
+      Font.Height = -14
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label8: TLabel
+      Left = 47
+      Top = 25
+      Width = 187
+      Height = 28
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'IT'#193'LIA'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGreen
+      Font.Height = -14
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Image1: TImage
+      Left = 248
+      Top = 25
+      Width = 60
+      Height = 28
+      Center = True
+      Stretch = True
+    end
+  end
+end
