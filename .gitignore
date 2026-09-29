@@ -1,0 +1,13 @@
+# Delphi: arquivos compilados e gerados pela IDE
+*.dcu
+*.exe
+*.identcache
+*.local
+*.~*
+src/dcu/
+src/exe/
+__history/
+__recovery/
+
+# Arquivos soltos
+src/images/w640-jpeg.zip

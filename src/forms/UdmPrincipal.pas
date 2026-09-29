@@ -1,0 +1,93 @@
+unit UdmPrincipal;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.FB,
+  FireDAC.Phys.FBDef, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client,
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
+  FireDAC.Comp.DataSet;
+
+type
+  TdmPrincipal = class(TDataModule)
+    ConexaoPrincipal: TFDConnection;
+    qry_Times: TFDQuery;
+    dsTimes: TDataSource;
+    qry_TimesCODIGO: TIntegerField;
+    qry_TimesSELECAO: TStringField;
+    qry_TimesSIGLA: TStringField;
+    qry_TimesBANDEIRA: TStringField;
+    qry_Competicao: TFDQuery;
+    qry_CompeticaoCODIGO: TIntegerField;
+    qry_CompeticaoEDICAO: TStringField;
+    qry_CompeticaoMODELO: TIntegerField;
+    qry_CompeticaoINICIO: TSQLTimeStampField;
+    qry_CompeticaoFIM: TSQLTimeStampField;
+    qry_CompeticaoSTATUS: TStringField;
+    qry_CompeticaoANFITRIAO: TIntegerField;
+    dsCompeticao: TDataSource;
+    qry_Modelo: TFDQuery;
+    dsModelo: TDataSource;
+    qry_ModeloCODIGO: TIntegerField;
+    qry_ModeloMODELO: TStringField;
+    qry_ModeloQUANTTIMES: TIntegerField;
+    qry_TimesCONTINENTE: TStringField;
+    qry_Participante: TFDQuery;
+    dsParticipante: TDataSource;
+    qry_ParticipanteCODIGO: TIntegerField;
+    qry_ParticipanteCOMPETICAO: TIntegerField;
+    qry_ParticipanteSELECAO: TIntegerField;
+    qry_ParticipanteCOLOCACAO: TIntegerField;
+    qry_ParticipanteANFITRIAO: TStringField;
+    qry_CompeticaoRODADA: TIntegerField;
+    qry_TimesPONTUACAO: TIntegerField;
+    qry_TimesSALDO: TIntegerField;
+    procedure qry_CompeticaoAfterInsert(DataSet: TDataSet);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    function GetNewID( pNomeTabela, pNomeCampoCodigo: String ): Integer;
+  end;
+
+var
+  dmPrincipal: TdmPrincipal;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+{ TdmPrincipal }
+
+function TdmPrincipal.GetNewID(pNomeTabela, pNomeCampoCodigo: String): Integer;
+var
+  vQry: TFDQuery;
+begin
+  vQry := TFDQuery.Create(nil);
+  try
+    vQry.Close;
+    vQry.Connection := ConexaoPrincipal;
+    vQry.SQL.Clear;
+    vQry.SQL.Add( 'Select max('+ pNomeCampoCodigo +') as CODIGO from ' + pNomeTabela);
+    vQry.Open();
+
+    Result := vQry.Fields.FieldByName('CODIGO').AsInteger + 1;
+  finally
+    FreeAndNil(vQry);
+  end;
+end;
+
+procedure TdmPrincipal.qry_CompeticaoAfterInsert(DataSet: TDataSet);
+begin
+  qry_CompeticaoCODIGO.AsInteger  := GetNewID('TCOMPETICAO', 'CODIGO');
+  qry_CompeticaoEDICAO.AsString   := UpperCase(Copy(FormatDateTime('mmmm', Date),1,3)) + '.' + FormatDateTime('yyyy', Date) + '.' + FormatFloat('0000',qry_CompeticaoCODIGO.AsInteger);
+  qry_CompeticaoMODELO.AsInteger  := 2;
+  qry_CompeticaoINICIO.AsDateTime := Now;
+  qry_CompeticaoSTATUS.AsString   := 'EM ANDAMENTO';
+end;
+
+end.
